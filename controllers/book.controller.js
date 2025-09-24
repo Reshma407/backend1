@@ -27,8 +27,20 @@ export const createBook = async (req, res) => {
 // Get all books
 export const getAllBooks = async (req, res) => {
   try {
-    const books = await Book.find().populate("borrowedBy", "name email");
-    res.status(200).json({ books });
+    let{page =1,limit=10}=req.query;
+    page=parsenInt(page);
+    limit =parseInt(limit);
+    console.log(page,limit);
+
+    const books = await Book.find().skip((page -1)*limit)
+    .limit(limit);
+
+    res.status(200).json({
+      page,
+      limit,
+      total:await Book.countDocuments(),
+      data:book,
+    });
   } catch (error) {
     res.status(500).json({ message: "Server error", error: error.message });
   }
