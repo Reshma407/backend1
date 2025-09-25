@@ -38,6 +38,9 @@ app.get("/", (req, res) => {
 });
 
 // Start server
-app.listen(config.PORT, () => {
-  console.log(`Server is running on port ${config.PORT}`);
+const PORT = process.env.PORT || config.PORT || 5000;
+
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
 });
+
